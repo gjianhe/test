@@ -1,20 +1,17 @@
-static uint16_t CrcValueCalc(const uint8_t* Data, int length)
+uint16_t CRC16(uint8_t* Msg, uint16_t DataLen)
 {
     int i;
-    uint16_t crcValue = 0xffff;
+    uint16_t RegCRC = 0xFFFF;
 
-    while (length --)
+    while (DataLen--)
     {
-        crcValue ^= (uint16_t) * (Data ++);
-        #if 0
-        for (i = 7; i >= 0; i --)
-        #else
+        RegCRC ^= *(Msg++);
+
         for (i = 0; i < 8; i++)
-        #endif
         {
-            crcValue = (crcValue & 0x0001) ? ((crcValue >> 1) ^ 0xa001) : (crcValue >> 1);
+            RegCRC = (RegCRC & 0x0001) ? (RegCRC >> 1 ^ 0xA001) : (RegCRC >>= 1);
         }
     }
 
-    return crcValue;
+    return RegCRC;
 }
